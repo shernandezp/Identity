@@ -29,7 +29,7 @@
                 // changed since the authorization code/refresh token was issued.
                 identity.SetClaim(Claims.Subject, clientId);
                 identity.AddClaim(Claims.Username, request.Username);
-                identity.AddClaim(Claims.Role, "Administrator");
+                identity.AddClaim(Claims.Role, "Administrator");   //get the role from db
                 identity.SetScopes(request.GetScopes());
                 var principal = new ClaimsPrincipal(identity);
 

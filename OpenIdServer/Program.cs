@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using OpenIddict.Server;
 using OpenIdDictSample.Server;
 using OpenIdServer.Data;
 
@@ -62,7 +60,6 @@ builder.Services.AddOpenIddict()
     );
 
 builder.Services.AddHostedService<ClientSeeder>();
-//builder.Services.AddScoped<ApplicationDbContextInitialiser>();
 
 var app = builder.Build();
 
