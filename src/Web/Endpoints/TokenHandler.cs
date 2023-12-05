@@ -16,11 +16,11 @@ public sealed class TokenHandler(IOpenIddictScopeManager scopeManager, ISender s
         var request = context.GetOpenIddictServerRequest() ??
             throw new InvalidOperationException("The OpenID Connect request cannot be retrieved.");
 
-        if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
-            throw new ArgumentException("Username and password are mandatory.");
-
         if (request.IsClientCredentialsGrantType())
         {
+            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+                throw new ArgumentException("Username and password are mandatory.");
+
             var query = new GetUsersQuery(request.Username, request.Password);
             var user = await sender.Send(query) ?? 
                 throw new UnauthorizedAccessException("The user is unauthorized.");

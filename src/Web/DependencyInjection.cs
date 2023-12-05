@@ -1,4 +1,5 @@
-﻿using Security.Infrastructure.Data;
+﻿using Quartz;
+using Security.Infrastructure.Data;
 
 namespace Security.Web;
 
@@ -6,11 +7,23 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddOpenIdDictServices(this IServiceCollection services)
     {
+        services.AddQuartz(options =>
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            options.UseMicrosoftDependencyInjectionJobFactory();
+#pragma warning restore CS0618 // Type or member is obsolete
+            options.UseSimpleTypeLoader();
+            options.UseInMemoryStore();
+        });
+        services.AddQuartzHostedService(options => options.WaitForJobsToComplete = true);
+
         services.AddOpenIddict()
-        .AddCore(
-            _ => _.UseEntityFrameworkCore()
-                    .UseDbContext<AuthorityDbContext>()
-                    .ReplaceDefaultEntities<long>())
+        .AddCore(options => {
+            options.UseEntityFrameworkCore()
+            .UseDbContext<AuthorityDbContext>()
+            .ReplaceDefaultEntities<long>();
+            options.UseQuartz();
+        })
         .AddServer(
             _ =>
             {
@@ -46,6 +59,7 @@ public static class DependencyInjection
                 _.UseAspNetCore().EnableTokenEndpointPassthrough();
             }
         );
+
 
         return services;
     }

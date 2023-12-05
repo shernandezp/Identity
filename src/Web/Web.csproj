@@ -21,7 +21,9 @@
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" />
     <PackageReference Include="FluentValidation.AspNetCore" />
     <PackageReference Include="OpenIddict.AspNetCore" />
+    <PackageReference Include="OpenIddict.Quartz" />
     <PackageReference Include="OpenIddict.Server" />
+    <PackageReference Include="Quartz.Extensions.Hosting" />
     <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
 
