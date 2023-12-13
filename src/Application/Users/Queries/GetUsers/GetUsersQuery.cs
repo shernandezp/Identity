@@ -4,10 +4,10 @@ using Security.Application.Common.Interfaces;
 
 namespace Security.Application.Users.Queries.GetUsers;
 
-public record GetUsersQuery (string username, string password) : IRequest<UserDto?>
+public record GetUsersQuery() : IRequest<UserDto?>
 {
-    public string UserName { get; init; } = username;
-    public string Password { get; init; } = password;
+    public string? UserName { get; set; }
+    public string? Password { get; set; }
 }
 
 public class GetUsersQueryHandler(ISecurityDbContext context, IMapper mapper) : IRequestHandler<GetUsersQuery, UserDto?>

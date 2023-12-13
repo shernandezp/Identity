@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Security.Infrastructure.Data;
 using Security.Web;
 using Security.Web.Endpoints;
@@ -5,18 +6,27 @@ using Security.Web.Endpoints;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme,
+                    options => options.LoginPath = "/login");
+
+// Add services to the container.
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddOpenIdDictDbContext(builder.Configuration);
 builder.Services.AddOpenIdDictServices();
 
+builder.Services.AddRazorPages();
 builder.Services.AddHostedService<ClientSeeder>();
 
 // Add HealthChecks
 builder.Services.AddHealthChecks()
             .AddDbContextCheck<SecurityDbContext>();
 
-//Register TokenHandler
+//Register Handlers
+builder.Services.AddScoped<AuthorizationHandler>();
 builder.Services.AddScoped<TokenHandler>();
 
 var app = builder.Build();
@@ -34,10 +44,19 @@ else
 
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
+app.UseRouting();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseExceptionHandler(options => { });
+
+app.MapGet("~/authorize", async (HttpContext context) =>
+{
+    var tokenHandler = context.RequestServices.GetRequiredService<AuthorizationHandler>();
+    await tokenHandler.Authorize(context);
+});
 
 app.MapPost("~/token", async (HttpContext context) =>
 {
@@ -45,6 +64,8 @@ app.MapPost("~/token", async (HttpContext context) =>
     return await tokenHandler.Exchange(context);
 });
 
-app.Run();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
-public partial class Program { }
+app.Run();

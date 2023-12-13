@@ -53,16 +53,20 @@ public sealed class ClientSeeder(IServiceProvider serviceProvider) : IHostedServ
             ClientId = "mobile_client",
             ClientSecret = "1b01a2f0-01ef-482b-ade2-34a251632ef7",
             Type = OpenIddictConstants.ClientTypes.Confidential,
+            RedirectUris = { new Uri("https://oauth.pstmn.io/v1/callback") },
             Permissions =
                     {
+                        OpenIddictConstants.Permissions.Endpoints.Authorization,
                         OpenIddictConstants.Permissions.Endpoints.Token,
                         OpenIddictConstants.Permissions.Endpoints.Introspection,
                         OpenIddictConstants.Permissions.Endpoints.Revocation,
 
+                        OpenIddictConstants.Permissions.GrantTypes.AuthorizationCode,
                         OpenIddictConstants.Permissions.GrantTypes.ClientCredentials,
                         OpenIddictConstants.Permissions.GrantTypes.RefreshToken,
 
-                        OpenIddictConstants.Permissions.Prefixes.Scope + "mobile_scope"
+                        OpenIddictConstants.Permissions.Prefixes.Scope + "mobile_scope",
+                        OpenIddictConstants.Permissions.ResponseTypes.Code
                     }
         };
 

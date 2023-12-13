@@ -18,10 +18,12 @@ public sealed class TokenHandler(IOpenIddictScopeManager scopeManager, ISender s
 
         if (request.IsClientCredentialsGrantType())
         {
-            if (string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
-                throw new ArgumentException("Username and password are mandatory.");
+            var query = new GetUsersQuery
+            {
+                UserName = request.Username,
+                Password = request.Password
+            };
 
-            var query = new GetUsersQuery(request.Username, request.Password);
             var user = await sender.Send(query) ?? 
                 throw new UnauthorizedAccessException("The user is unauthorized.");
 
@@ -45,6 +47,15 @@ public sealed class TokenHandler(IOpenIddictScopeManager scopeManager, ISender s
             context.User = principal;
 
             return Results.SignIn(new ClaimsPrincipal(identity), properties: null, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+        }
+        if (request.IsAuthorizationCodeGrantType())
+        {
+            // Retrieve the claims principal stored in the authorization code
+            var claimsPrincipal = (await context.AuthenticateAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme)).Principal;
+            if (claimsPrincipal != null)
+            {
+                return Results.SignIn(claimsPrincipal, properties: null, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
+            }
         }
         if (request.IsRefreshTokenGrantType())
         {

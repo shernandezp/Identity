@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Microsoft.Extensions.Options;
+using Quartz;
 using Security.Infrastructure.Data;
 
 namespace Security.Web;
@@ -29,7 +30,9 @@ public static class DependencyInjection
             {
                 _.AllowClientCredentialsFlow();
                 _.AllowRefreshTokenFlow();
+                _.AllowAuthorizationCodeFlow().RequireProofKeyForCodeExchange();
 
+                _.SetAuthorizationEndpointUris("authorize");
                 _.SetTokenEndpointUris("token");
                 _.SetRevocationEndpointUris("token/revoke");
                 _.SetIntrospectionEndpointUris("token/introspect");
@@ -56,7 +59,9 @@ public static class DependencyInjection
 
                 ////disable access token payload encryption
                 _.DisableAccessTokenEncryption();
-                _.UseAspNetCore().EnableTokenEndpointPassthrough();
+                _.UseAspNetCore()
+                    .EnableTokenEndpointPassthrough()
+                    .EnableAuthorizationEndpointPassthrough();
             }
         );
 
