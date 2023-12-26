@@ -1,24 +1,29 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Security.Application.Common.Interfaces;
+﻿using System.Security.Authentication;
+using Security.Domain.Interfaces;
+using Security.Domain.Models;
+using Common.Domain.Extensions;
 
 namespace Security.Application.Users.Queries.GetUsers;
 
-public record GetUsersQuery() : IRequest<UserDto?>
+public record GetUsersQuery(string Email, string Password) : IRequest<UserVm>
 {
-    public string? UserName { get; set; }
-    public string? Password { get; set; }
+    public string Email { get; set; } = Email;
+    public string Password { get; set; } = Password;
 }
 
-public class GetUsersQueryHandler(ISecurityDbContext context, IMapper mapper) : IRequestHandler<GetUsersQuery, UserDto?>
+public class GetUsersQueryHandler(IUserReader reader) : IRequestHandler<GetUsersQuery, UserVm>
 {
-    public async Task<UserDto?> Handle(GetUsersQuery request, CancellationToken cancellationToken)
+    public async Task<UserVm> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        return await context.Users
-            .Where(u => u.Username.Equals(request.UserName) && u.Password.Equals(request.Password))
-            .Include(role => role.Roles)
-            .Include(user => user.Profiles)
-            .ProjectTo<UserDto>(mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync(cancellationToken);
+        var user = await reader.GetUserAsync(new Domain.Records.UserLoginDto(request.Email, request.Password), cancellationToken);
+
+        if (user.Verified == null)
+            throw new AuthenticationException("User account hasn't been verified");
+
+        if (!user.Active)
+            throw new AuthenticationException("User account is inactive");
+
+        return user.Password.VerifyHashedPassword(request.Password)
+            ? user : throw new AuthenticationException("Email or password is incorrect");
     }
 }

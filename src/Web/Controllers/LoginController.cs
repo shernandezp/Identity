@@ -4,9 +4,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Security.Web.Models;
 using Microsoft.AspNetCore.Authorization;
+using Security.Application.Users.Queries.GetUsers;
 
 namespace Web.Controllers;
-public class LoginController : Controller
+public class LoginController(ISender sender) : Controller
 {
     [HttpGet]
     [AllowAnonymous]
@@ -23,11 +24,15 @@ public class LoginController : Controller
     {
         ViewData["ReturnUrl"] = model.ReturnUrl;
 
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
+            return View(model);
+
+        var user = await sender.Send(new GetUsersQuery(model.Email, model.Password));
+        if (!string.IsNullOrEmpty(user.Username))
         {
             var claims = new List<Claim>
                 {
-                    new(ClaimTypes.Name, model.Username)
+                    new(ClaimTypes.Name, user.Username)
                 };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

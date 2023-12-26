@@ -8,8 +8,8 @@
     <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
     <PackageVersion Include="Common.Application" Version="0.0.5" />
-    <PackageVersion Include="Common.Domain" Version="0.0.3" />
-    <PackageVersion Include="Common.Infrastructure" Version="0.0.2" />
+    <PackageVersion Include="Common.Domain" Version="0.0.8" />
+    <PackageVersion Include="Common.Infrastructure" Version="0.0.4" />
     <PackageVersion Include="Common.Web" Version="0.0.1-pre-0002" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />

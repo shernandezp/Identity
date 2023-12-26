@@ -1,13 +1,19 @@
-﻿namespace Security.Application.Users.Queries.GetUsers;
+﻿using Common.Domain.Constants;
+
+namespace Security.Application.Users.Queries.GetUsers;
 
 public sealed class GetUsersQueryValidator : AbstractValidator<GetUsersQuery>
 {
     public GetUsersQueryValidator()
     {
-        RuleFor(x => x.UserName)
-            .NotEmpty().WithMessage("Username is required.");
+        RuleFor(v => v.Email)
+            .EmailAddress()
+            .MaximumLength(ColumnMetadata.DefaultEmailLength)
+            .NotEmpty();
 
-        RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Password is required.");
+        RuleFor(v => v.Password)
+            .MinimumLength(ColumnMetadata.MinimumPasswordLength)
+            .MaximumLength(ColumnMetadata.DefaultPasswordLength)
+            .NotEmpty();
     }
 }

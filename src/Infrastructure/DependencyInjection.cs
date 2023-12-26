@@ -1,7 +1,8 @@
-﻿using Security.Application.Common.Interfaces;
-using Security.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Security.Domain.Interfaces;
+using Security.Infrastructure;
+using Security.Infrastructure.Interfaces;
+using Security.Infrastructure.Readers;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -17,8 +18,7 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString, o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
         services.AddScoped<ISecurityDbContext>(provider => provider.GetRequiredService<SecurityDbContext>());
-
-        services.AddScoped<SecurityDbContextInitialiser>();
+        services.AddScoped<IUserReader, UserReader>();
 
         return services;
     }

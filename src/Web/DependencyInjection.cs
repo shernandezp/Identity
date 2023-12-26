@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.Options;
-using Quartz;
-using Security.Infrastructure.Data;
+﻿using Quartz;
+using Security.Infrastructure;
 
 namespace Security.Web;
 
