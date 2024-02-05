@@ -33,8 +33,7 @@ public sealed class AuthorizationHandler
 
         var claims = new List<Claim>
         {
-            new(OpenIddictConstants.Claims.Subject, result.Principal?.Identity?.Name ?? string.Empty),
-            //new Claim("some claim", "some value").SetDestinations(OpenIddictConstants.Destinations.AccessToken)
+            new(OpenIddictConstants.Claims.Subject, result.Principal?.Claims.Single(x => x.Type == ClaimTypes.Sid).Value ?? string.Empty)
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
@@ -44,7 +43,6 @@ public sealed class AuthorizationHandler
 
         if (claimsPrincipal != null)
         {
-            //context.SignInAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, claimsPrincipal);
             await context.SignInAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, claimsPrincipal);
         }
     }

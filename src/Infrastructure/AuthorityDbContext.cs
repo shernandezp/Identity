@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Security.Infrastructure;
+﻿namespace Security.Infrastructure;
 public class AuthorityDbContext : DbContext
 {
     public AuthorityDbContext(DbContextOptions<AuthorityDbContext> options)

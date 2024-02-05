@@ -52,7 +52,7 @@ public sealed class ClientSeeder(IServiceProvider serviceProvider) : IHostedServ
         {
             ClientId = "mobile_client",
             ClientSecret = "1b01a2f0-01ef-482b-ade2-34a251632ef7",
-            Type = OpenIddictConstants.ClientTypes.Confidential,
+            ClientType = OpenIddictConstants.ClientTypes.Confidential,
             RedirectUris = { new Uri("https://oauth.pstmn.io/v1/callback") }, //add one with app mobile URI
             Permissions =
                     {

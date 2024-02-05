@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using OpenIddict.Server.AspNetCore;
 using Security.Infrastructure;
 using Security.Web;
 using Security.Web.Endpoints;
@@ -58,6 +60,16 @@ app.MapPost("~/token", async (HttpContext context) =>
 {
     var tokenHandler = context.RequestServices.GetRequiredService<TokenHandler>();
     return await tokenHandler.Exchange(context);
+});
+
+app.MapGet("~/logout", async (HttpContext context) =>
+{
+    await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    await context.SignOutAsync(OpenIddictServerAspNetCoreDefaults.AuthenticationScheme, new AuthenticationProperties
+    {
+        RedirectUri = "/Home"
+    });
+    context.Response.Redirect("/Home");
 });
 
 app.MapControllerRoute(

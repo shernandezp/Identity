@@ -32,7 +32,7 @@ public class LoginController(ISender sender) : Controller
         {
             var claims = new List<Claim>
                 {
-                    new(ClaimTypes.Name, user.Username)
+                    new(ClaimTypes.Sid, $"{user.UserId}")
                 };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -43,13 +43,5 @@ public class LoginController(ISender sender) : Controller
         }
 
         return View(model);
-    }
-
-    //public async Task<IActionResult> Logout()
-    public async Task Logout()
-    {
-        await HttpContext.SignOutAsync();
-
-        //return RedirectToAction(nameof(HomeController.Index), "Home");
     }
 }

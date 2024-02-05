@@ -35,9 +35,10 @@ public static class DependencyInjection
                 _.SetTokenEndpointUris("token");
                 _.SetRevocationEndpointUris("token/revoke");
                 _.SetIntrospectionEndpointUris("token/introspect");
+                _.SetLogoutEndpointUris("logout");
                 _.RegisterScopes("mobile_scope", "web_scope", "sec_scope");
 
-                //don't use this in porduction
+                //don't use this in production
                 _.AddDevelopmentEncryptionCertificate()
                 .AddDevelopmentSigningCertificate();
 
@@ -60,6 +61,7 @@ public static class DependencyInjection
                 _.DisableAccessTokenEncryption();
                 _.UseAspNetCore()
                     .EnableTokenEndpointPassthrough()
+                    .EnableLogoutEndpointPassthrough()
                     .EnableAuthorizationEndpointPassthrough();
             }
         );
