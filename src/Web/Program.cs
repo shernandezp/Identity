@@ -18,7 +18,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddApplicationServices();
 builder.Services.AddApplicationDbContext(builder.Configuration);
 builder.Services.AddOpenIdDictDbContext(builder.Configuration);
-builder.Services.AddOpenIdDictServices();
+builder.Services.AddOpenIdDictServices(builder.Configuration);
 
 builder.Services.AddRazorPages();
 builder.Services.AddHostedService<ClientSeeder>();

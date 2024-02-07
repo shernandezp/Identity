@@ -1,11 +1,12 @@
-﻿using Quartz;
+﻿using System.Security.Cryptography.X509Certificates;
+using Quartz;
 using Security.Infrastructure;
 
 namespace Security.Web;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddOpenIdDictServices(this IServiceCollection services)
+    public static IServiceCollection AddOpenIdDictServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddQuartz(options =>
         {
@@ -38,24 +39,20 @@ public static class DependencyInjection
                 _.SetLogoutEndpointUris("logout");
                 _.RegisterScopes("mobile_scope", "web_scope", "sec_scope");
 
-                //don't use this in production
-                _.AddDevelopmentEncryptionCertificate()
-                .AddDevelopmentSigningCertificate();
+#if DEBUG
+                    _.AddDevelopmentEncryptionCertificate()
+                        .AddDevelopmentSigningCertificate();
+#else
+                    var certificatePath = configuration["OpenIddict:Path"];
+                    var certificatePassword = configuration["OpenIddict:Password"];
 
-                ////Production
-                ////register real certificate here
-                ////like
-                ////should be cert in PKCE format
-                //var cerdata = builder.Configuration["OpenIddict:Certificate"];
-                //var cer = new X509Certificate2(
-                //    Convert.FromBase64String(cerdata),
-                //    password: (string)null,
-                ////it is important to use X509KeyStorageFlags.EphemeralKeySet to avoid 
-                ////Internal.Cryptography.CryptoThrowHelper+WindowsCryptographicException: The system cannot find the file specified.
-                //    keyStorageFlags: X509KeyStorageFlags.EphemeralKeySet
-                //    );
-                //_.AddSigningCertificate(cer)
-                //    .AddEncryptionCertificate(cer);
+                    var bytes = File.ReadAllBytes(certificatePath ?? "");
+                    var certificate = new X509Certificate2(
+                        bytes,
+                        certificatePassword);
+                    _.AddSigningCertificate(certificate)
+                        .AddEncryptionCertificate(certificate);
+#endif
 
                 ////disable access token payload encryption
                 _.DisableAccessTokenEncryption();
