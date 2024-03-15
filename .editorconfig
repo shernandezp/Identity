@@ -376,3 +376,6 @@ dotnet_naming_style.s_camelcase.word_separator =
 dotnet_naming_style.s_camelcase.capitalization = camel_case
 
 dotnet_style_namespace_match_folder = true:suggestion
+tab_width = 4
+indent_size = 4
+end_of_line = lf

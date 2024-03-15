@@ -7,6 +7,6 @@
     <Authors>Sergio Hernandez</Authors>
     <RepositoryUrl>https://github.com/shernandezp/Identity.git</RepositoryUrl>
     <Version>0.0.1</Version>
-    <Copyright>Copyright ©2024, Sergio Hernandez. All rights reserved.</Copyright>
+    <Copyright>Copyright © 2024, Sergio Hernandez. All rights reserved.</Copyright>
   </PropertyGroup>
 </Project>
