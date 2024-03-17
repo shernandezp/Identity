@@ -4,7 +4,7 @@ An endeavour to develop an Identity Server for a Single Page Application (SPA) b
 
 Common Libraries - [Common](https://github.com/shernandezp/Common)
 
-REST & GraphQL clients - [Common](https://github.com/shernandezp/Security)
+REST & GraphQL clients - [Security](https://github.com/shernandezp/Security)
 
 ## License
 
