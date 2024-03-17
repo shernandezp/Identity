@@ -1,11 +1,13 @@
 ﻿@model Security.Web.Models.LoginViewModel
 <form autocomplete="off" asp-route="Login">
     <input type="hidden" asp-for="ReturnUrl" />
-    <div class="card">
-        <input type="text" class="form-control form-control-lg" placeholder="Email" asp-for="Email" autofocus>
-        <input type="password" class="form-control form-control-lg form-control-last" placeholder="Password" asp-for="Password">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" class="form-control form-control-lg" placeholder="Enter your email" asp-for="Email" autofocus>
     </div>
-    <p>
-        <button type="submit" class="btn btn-dark btn-block mt-3">Login</button>
-    </p>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" class="form-control form-control-lg" placeholder="Enter your password" asp-for="Password">
+    </div>
+    <button type="submit" class="btn btn-dark btn-block mt-3">Login</button>
 </form>

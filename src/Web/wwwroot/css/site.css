@@ -1,35 +1,58 @@
+/* Resetting outline on focus */
 :focus {
-    outline: 0 !important;
+    outline: none !important;
 }
 
+/* Error state styling */
 .input-validation-error {
     border: 1px solid darkred;
 }
 
+/* Form styling */
 form {
     width: 100%;
 }
 
+/* Input field styling */
 .form-control {
-    border: 0;
+    border: none;
     border-radius: 0;
-    border-bottom: 1px solid lightgray;
-    font-size: 0.9rem;
+    border-bottom: 2px solid lightgray;
+    font-size: 1rem;
+    padding: 8px 12px;
+    transition: border-color 0.3s ease;
 }
 
     .form-control:focus {
-        border-bottom-color: lightgray;
-        box-shadow: none;
+        border-bottom-color: dodgerblue;
     }
 
-    .form-control.form-control-last {
-        border-bottom: 0;
-    }
-
+    /* Placeholder styling */
     .form-control::placeholder {
         opacity: 0.6;
     }
 
-    .form-control.input-validation-error {
-        border: 1px solid darkred;
+/* Button styling */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    background-color: dodgerblue;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .btn:hover {
+        background-color: #1e90ff; /* Darker shade of primary color on hover */
     }
+
+/* Card styling */
+.card {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+}
