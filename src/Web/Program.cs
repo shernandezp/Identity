@@ -22,6 +22,12 @@ using Security.Web.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options => 
+    options.AddDefaultPolicy(builder => 
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader()));
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -59,6 +65,7 @@ app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+app.UseCors();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

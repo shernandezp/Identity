@@ -25,9 +25,6 @@ public static class DependencyInjection
     {
         services.AddQuartz(options =>
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            options.UseMicrosoftDependencyInjectionJobFactory();
-#pragma warning restore CS0618 // Type or member is obsolete
             options.UseSimpleTypeLoader();
             options.UseInMemoryStore();
         });
@@ -36,8 +33,8 @@ public static class DependencyInjection
         services.AddOpenIddict()
         .AddCore(options => {
             options.UseEntityFrameworkCore()
-            .UseDbContext<AuthorityDbContext>()
-            .ReplaceDefaultEntities<long>();
+                .UseDbContext<AuthorityDbContext>()
+                .ReplaceDefaultEntities<long>();
             options.UseQuartz();
         })
         .AddServer(
