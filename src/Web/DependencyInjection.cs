@@ -64,6 +64,7 @@ public static class DependencyInjection
                         certificatePassword);
                     _.AddSigningCertificate(certificate)
                         .AddEncryptionCertificate(certificate);
+                    //TODO: Separate certificates for signing and encryption
 #endif
 
                 ////disable access token payload encryption
